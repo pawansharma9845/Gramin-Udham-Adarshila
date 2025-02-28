@@ -14,6 +14,8 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        -webkit-overflow-scrolling: touch;
+
       }
   
       body {
@@ -40,6 +42,7 @@
         max-width: 1400px;
         margin: 0 auto;
         padding: 0 2rem;
+        overflow: hidden;
       }
   
       .btn {
@@ -344,20 +347,37 @@
         }
         h1 { font-size: 2.75rem; }
         h2 { font-size: 2.25rem; }
-        .nav-links {
-          position: fixed;
-          top: 70px;
-          right: -100%;
-          flex-direction: column;
-          background: white;
-          width: 100%;
-          max-width: 300px;
-          padding: 2rem;
-          box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-          transition: var(--transition);
-        }
-        .nav-links.active {
-          right: 0;
+        /* Prevent body scroll when menu is open */
+body.menu-active {
+  overflow: hidden;
+}
+        @media (max-width: 992px) {
+          
+          .nav-links {
+            position: fixed;
+            top: 70px;
+            right: -100%;
+            height: calc(100vh - 70px);
+            width: 100%;
+            max-width: 300px;
+            background: white;
+            flex-direction: column;
+            padding: 2rem;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            transform: translateX(100%);
+            overflow-y: auto;
+          }
+        
+          .nav-links.active {
+            transform: translateX(0);
+            right: 0;
+          }
+          
+          /* Prevent horizontal scroll */
+          .nav-container {
+            overflow-x: hidden;
+          }
         }
         .menu-toggle {
           display: block;
@@ -379,14 +399,15 @@
       }
   
       /* Desktop view: display all products side by side */
-      @media (min-width: 769px) {
+      @media (max-width: 768px) {
         .products-grid {
-          flex-wrap: wrap;
-          gap: 20px;
+          width: 100%;
         }
+        
         .product-card {
-          min-width: 0;
-          flex: 1 1 calc(33.33% - 20px);
+          min-width: 100%;
+          margin: 0;
+          padding: 0 10px;
         }
         /* Hide carousel navigation controls on desktop */
         .carousel-btn {
